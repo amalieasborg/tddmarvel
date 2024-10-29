@@ -1,8 +1,9 @@
-const { expect } = require('chai');
-const request = require('supertest')
-const app=require('../../server');
-const {description} = require("mocha/lib/cli/init");
+const chai = require('chai');
+const request = require('supertest');
+const app = require('../../server.js'); // Ensure this path is correct
 
+chai.should(); // Initialize should interface
+const { expect } = chai;
 
 describe('Marvel helte API', ()=>{
 
