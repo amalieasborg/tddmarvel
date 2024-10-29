@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/frontend.css">
+    <title>Marvel Heroes</title>
 </head>
 <body>
-
+<h1>Marvel Heroes</h1>
+<div id="hero-form">
+    <input type="text" id="name" placeholder="Hero Name" required>
+    <input type="text" id="alias" placeholder="Hero Alias" required>
+    <textarea id="powers" placeholder="Hero Powers (comma separated)" required></textarea>
+    <button id="create-hero">Create Hero</button>
+</div>
+<h2>All Heroes</h2>
+<ul id="hero-list"></ul>
+<script src="/JS/frontend.js"></script>
 </body>
 </html>

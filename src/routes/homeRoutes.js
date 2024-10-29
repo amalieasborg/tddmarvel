@@ -1,22 +1,23 @@
+// In your homeRoutes.js
 const express = require('express');
 const marvelController = require('../controllers/marvelController');
 const validationMiddleware = require('../middlewares/validationMiddleware');
 
 const router = express.Router();
 
-//opret helt (create)
+// Create a hero
 router.post('/', validationMiddleware.validateHero, marvelController.createHero);
 
-//læs alle helte (read)
-router.get ('/', marvelController.getAllHeroes);
+// Read all heroes
+router.get('/', marvelController.getAllHeroes);
 
-//læs en helt (read)
-router.get('/:id',marvelController.getHeroById);
+// Read a hero by ID
+router.get('/:id', marvelController.getHeroById);
 
-//opdater helt (update)
+// Update a hero
 router.put('/:id', validationMiddleware.validateHero, marvelController.updateHero);
 
-//slet helt (delete)
-router.delete('/:id',marvelController.deleteHero);
+// Delete a hero
+router.delete('/:id', marvelController.deleteHero);
 
 module.exports = router;
