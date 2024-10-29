@@ -1,46 +1,71 @@
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 
-let heroList=[]; //Simpel array for at gemme helte
-let currentId=1
+const filePath = path.join(__dirname, 'heroes.json');
 
-//Opret ny helt
-exports.create=(heroData)=>{
-    const newHero={
-        id:currentId++,
-        ...heroData
-    };
-    heroList.push(newHero);
+// Function to read data from JSON file
+function readData() {
+    try {
+        const data = fs.readFileSync(filePath, 'utf-8');
+        return JSON.parse(data);
+    } catch (err) {
+        console.error('Error reading file:', err);
+        return { currentId: 1, heroList: [] }; // Default values if file doesn't exist
+    }
+}
+
+// Function to write data to JSON file
+function writeData(data) {
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (err) {
+        console.error('Error writing to file:', err);
+    }
+}
+
+// Create a new hero
+exports.create = (heroData) => {
+    const data = readData();
+
+    // Set the new hero ID and add to the list
+    const newHero = { id: data.currentId++, ...heroData };
+    data.heroList.push(newHero);
+
+    // Write the updated data to the JSON file
+    writeData(data);
+
     return newHero;
 };
 
-//Hent alle helte
-exports.findAll=()=>{
-    return heroList;
+// Retrieve all heroes
+exports.findAll = () => {
+    return readData().heroList;
 };
 
-//Hent helt ved Id
-exports.findById=(id)=>{
-    return heroList.find(hero=>hero.id==id);
+// Retrieve a hero by ID
+exports.findById = (id) => {
+    return readData().heroList.find((hero) => hero.id == id);
 };
 
-//Opdater helt
-exports.update=(id, updatedData)=>{
-    const heroIndex=heroList.findIndex(hero=>hero.id==id);
-    if (heroIndex===-1) return null;
-    heroList[heroIndex]={id: Number(id),...updatedData};
-    return heroList[heroIndex];
+// Update a hero by ID
+exports.update = (id, updatedData) => {
+    const data = readData();
+    const heroIndex = data.heroList.findIndex((hero) => hero.id == id);
+    if (heroIndex === -1) return null;
+
+    data.heroList[heroIndex] = { id: Number(id), ...updatedData };
+    writeData(data); // Save changes to file
+
+    return data.heroList[heroIndex];
 };
 
-//Slet helt
-exports.delete=(id)=>{
-    const heroIndex=pokemonList.findIndex(pokemon=>pokemon.id==id);
-    if (heroIndex===-1) return false;
-    heroList.splice(heroIndex, 1)
-    return true;
+// Delete a hero by ID
+exports.delete = (id) => {
+    const data = readData();
+    const initialLength = data.heroList.length;
+    data.heroList = data.heroList.filter((hero) => hero.id != id);
+
+    if (data.heroList.length < initialLength) {
+        writeData(data); // Save changes to file
+    }
 };
-
-
-
-
-
